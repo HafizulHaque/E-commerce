@@ -11,6 +11,9 @@ const { productRoutes } = require('./src/modules/products')
 const port = process.env.PORT || 3000
 const apiVersion = process.env.API_VERSION || 'v1'
 
+//serve react frontend as static
+app.use(express.static('frontend/dist'))
+
 //static folder - middlewire
 app.use(express.static('public'))
 
@@ -18,14 +21,13 @@ app.use(express.static('public'))
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
-
 //route
-app.use(`/api/${apiVersion}/products`, productRoutes)
+
+const apiUrl = `/api/${apiVersion}`
+
+app.use(`${apiUrl}/products`, productRoutes)
 
 
-app.get(`/api/${apiVersion}`, (req, res) => {
-  res.json({name: 'homepage'})
-})
 
 app.listen(port, () => {
   console.log(`Server is running on port: ${port}`)
